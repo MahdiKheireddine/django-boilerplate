@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Enable dark mode via class
+  darkMode: 'class',
 
   // Specify all paths to scan for Tailwind classes
   content: [
@@ -27,4 +29,10 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
   ],
+  
+  // DaisyUI configuration
+  daisyui: {
+    themes: ['light', 'dark'], // enable light & dark themes
+    darkTheme: 'dark',         // default darkTheme
+  },
 };
