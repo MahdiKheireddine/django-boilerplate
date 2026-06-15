@@ -172,6 +172,16 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # change-email form instead of a multi-address management page.
 ACCOUNT_CHANGE_EMAIL = True
 
+# Email
+# Common config shared by all environments. The active EMAIL_BACKEND is set
+# per-environment: console in local.py, Brevo (Anymail) in production.py.
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
+SERVER_EMAIL = env('SERVER_EMAIL', default='root@localhost')
+
+ANYMAIL = {
+    'BREVO_API_KEY': env('BREVO_API_KEY', default=''),
+}
+
 if DEBUG:
     INSTALLED_APPS += ["django_browser_reload"]
     MIDDLEWARE += [
