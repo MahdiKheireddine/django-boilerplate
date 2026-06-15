@@ -35,10 +35,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'accounts',
 
     "tailwind",
-    "theme"
+    "theme",
+
+    'allauth',
+    'allauth.account',
+]
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to log in by username in Django admin, regardless of allauth
+    'django.contrib.auth.backends.ModelBackend',
+    # allauth specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 TAILWIND_APP_NAME = "theme"
@@ -55,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -149,6 +163,14 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.User"
+
+# django-allauth (65.x config API)
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# Limit users to a single email; /accounts/email/ becomes a simple
+# change-email form instead of a multi-address management page.
+ACCOUNT_CHANGE_EMAIL = True
 
 if DEBUG:
     INSTALLED_APPS += ["django_browser_reload"]
