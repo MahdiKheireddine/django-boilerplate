@@ -12,4 +12,5 @@ dependencies = [
     "django-tailwind>=4.2.0",
     "honcho>=2.0.0",
     "psycopg2-binary>=2.9.11",
+    "whitenoise>=6.12.0",
 ]
