@@ -1,5 +1,17 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  /* Compile all built-in themes. Which ones are actually offered in the UI is
+     controlled in ONE place: DAISYUI_THEMES in config/django/base.py.
+     light is the default; dark follows the OS preference. */
+  themes: all;
+}
+
+/* THEMES: add custom themes below
+   - built-in themes are all compiled above; pick which appear in the menu via
+     DAISYUI_THEMES in config/django/base.py
+   - to define a custom theme, add an @plugin "daisyui/theme" { ... } block here
+     and include its name in DAISYUI_THEMES */
 
 /**
   * A catch-all path to Django template files, JavaScript, and Python files

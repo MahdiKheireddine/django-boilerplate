@@ -83,6 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'theme.context_processors.daisyui_themes',
             ],
         },
     },
@@ -171,6 +172,14 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # Limit users to a single email; /accounts/email/ becomes a simple
 # change-email form instead of a multi-address management page.
 ACCOUNT_CHANGE_EMAIL = True
+
+# DaisyUI: single source of truth for which themes appear in the theme menu.
+# All built-in theme CSS is compiled (see theme/static_src/src/styles.css);
+# this list just controls what's offered. The first entry is the default.
+DAISYUI_THEMES = [
+    'light', 'dark', 'cupcake', 'synthwave', 'retro', 'cyberpunk',
+    'valentine', 'dracula', 'nord', 'business', 'forest', 'aqua',
+]
 
 # Email
 # Common config shared by all environments. The active EMAIL_BACKEND is set
