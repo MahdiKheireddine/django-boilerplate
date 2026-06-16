@@ -7,48 +7,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django Boilerplate - Tailwind + DaisyUI</title>
+    {# Page title: allauth leaves fill head_title; project pages can fill title. #}
+    <title>{% block head_title %}{% block title %}Django Boilerplate{% endblock %}{% endblock %}</title>
 
     {% tailwind_css %}
     <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-base-100 text-base-content transition-colors duration-300">
+<body class="bg-base-100 text-base-content transition-colors duration-300 min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <header class="p-4 bg-base-200 shadow-md flex justify-between items-center">
-        <h1 class="text-xl font-bold">Django Boilerplate</h1>
+    <header class="p-4 bg-base-200 shadow-md flex justify-between items-center gap-4">
+        <a href="/" class="text-xl font-bold">Django Boilerplate</a>
 
-        <!-- Theme selector: options come from DAISYUI_THEMES (settings); persisted via Alpine + localStorage -->
-        <select class="select select-sm select-bordered w-40" x-model="theme">
-            {% for t in daisyui_themes %}
-            <option value="{{ t }}">{{ t|capfirst }}</option>
-            {% endfor %}
-        </select>
+        <nav class="flex items-center gap-2">
+            {% if request.user.is_authenticated %}
+                <span class="hidden sm:inline text-sm opacity-70">{{ request.user.email }}</span>
+                <a href="{% url 'account_logout' %}" class="btn btn-sm btn-outline">Sign Out</a>
+            {% else %}
+                <a href="{% url 'account_login' %}" class="btn btn-sm btn-ghost">Sign In</a>
+                <a href="{% url 'account_signup' %}" class="btn btn-sm btn-primary">Sign Up</a>
+            {% endif %}
+
+            <!-- Theme selector: options come from DAISYUI_THEMES (settings); persisted via Alpine + localStorage -->
+            <select class="select select-sm select-bordered w-32" x-model="theme">
+                {% for t in daisyui_themes %}
+                <option value="{{ t }}">{{ t|capfirst }}</option>
+                {% endfor %}
+            </select>
+        </nav>
     </header>
 
     <!-- Main content -->
-    <main class="p-6 space-y-6">
-        <h2 class="text-2xl font-semibold">Welcome to Tailwind + DaisyUI!</h2>
+    <main class="flex-1 p-6">
 
-        <!-- Example card -->
-        <div class="card w-full max-w-md bg-base-200 shadow-lg">
-            <div class="card-body">
-                <h3 class="card-title">Example Card</h3>
-                <p>This is a sample card using DaisyUI components and Tailwind utilities.</p>
-                <div class="card-actions">
-                    <button class="btn btn-primary">Primary Action</button>
-                    <button class="btn btn-secondary">Secondary Action</button>
+        {% if messages %}
+        <div class="max-w-md mx-auto space-y-2 mb-6">
+            {% for message in messages %}
+            <div class="alert
+                {% if message.level_tag == 'error' %}alert-error
+                {% elif message.level_tag == 'success' %}alert-success
+                {% elif message.level_tag == 'warning' %}alert-warning
+                {% else %}alert-info{% endif %} shadow">
+                <span>{{ message }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {# allauth overrides content_wrapper to center its content in a card. #}
+        {% block content_wrapper %}
+            {% block content %}
+            <div class="space-y-6">
+                <h2 class="text-2xl font-semibold">Welcome to Tailwind + DaisyUI!</h2>
+
+                <div class="card w-full max-w-md bg-base-200 shadow-lg">
+                    <div class="card-body">
+                        <h3 class="card-title">Example Card</h3>
+                        <p>This is a sample card using DaisyUI components and Tailwind utilities.</p>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">Primary Action</button>
+                            <button class="btn btn-secondary">Secondary Action</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info shadow-lg">
+                    <span>Info alert: Tailwind + DaisyUI is working!</span>
                 </div>
             </div>
-        </div>
-
-        <!-- Example alert -->
-        <div class="alert alert-info shadow-lg">
-            <div>
-                <span>Info alert: Tailwind + DaisyUI is working!</span>
-            </div>
-        </div>
+            {% endblock content %}
+        {% endblock content_wrapper %}
     </main>
 
     <!-- Footer -->
@@ -56,6 +86,6 @@
         <p>&copy; 2025 Django Boilerplate. Made with ❤️ and TailwindCSS.</p>
     </footer>
 
-
+    {% block extra_body %}{% endblock %}
 </body>
 </html>

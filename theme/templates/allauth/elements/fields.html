@@ -1,0 +1,23 @@
+{% load allauth %}
+{# Render the form through the styled `field` element so DaisyUI classes apply
+   to every allauth form at once (replaces the default form.as_p). #}
+{% for field in attrs.form.hidden_fields %}{{ field }}{% endfor %}
+{% for field in attrs.form.visible_fields %}
+    {% if field.field.widget.input_type == "checkbox" %}
+        {% element field id=field.id_for_label name=field.html_name type="checkbox" required=field.field.required checked=field.value errors=field.errors %}
+            {% slot label %}{{ field.label }}{% endslot %}
+            {% if field.help_text %}{% slot help_text %}{{ field.help_text|safe }}{% endslot %}{% endif %}
+        {% endelement %}
+    {% else %}
+        {% if attrs.unlabeled %}
+            {% element field id=field.id_for_label name=field.html_name type=field.field.widget.input_type value=field.value required=field.field.required placeholder=field.label autocomplete=field.field.widget.attrs.autocomplete errors=field.errors %}
+                {% if field.help_text %}{% slot help_text %}{{ field.help_text|safe }}{% endslot %}{% endif %}
+            {% endelement %}
+        {% else %}
+            {% element field id=field.id_for_label name=field.html_name type=field.field.widget.input_type value=field.value required=field.field.required placeholder=field.field.widget.attrs.placeholder autocomplete=field.field.widget.attrs.autocomplete errors=field.errors %}
+                {% slot label %}{{ field.label }}{% endslot %}
+                {% if field.help_text %}{% slot help_text %}{{ field.help_text|safe }}{% endslot %}{% endif %}
+            {% endelement %}
+        {% endif %}
+    {% endif %}
+{% endfor %}

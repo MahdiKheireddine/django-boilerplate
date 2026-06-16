@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{# Bridge allauth into the project layout. allauth leaves fill `head_title`
+   and `content`; we render that content into a centered DaisyUI card. Messages
+   are already rendered globally by base.html. #}
+
+{% block content_wrapper %}
+    <div class="flex justify-center px-4 py-10">
+        <div class="card w-full max-w-md bg-base-200 shadow-xl">
+            <div class="card-body">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </div>
+{% endblock content_wrapper %}
